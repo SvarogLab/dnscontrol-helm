@@ -63,6 +63,14 @@ imagePullSecrets:
   - name: ghcr-credentials
 ```
 
+### DNS resolution
+
+`dnsConfig` defaults to `ndots: 1`, which is load-bearing rather than tuning. A cluster search list
+that ends in a real public domain, plus a wildcard record in that domain, makes every short external
+name resolve to NOERROR/NODATA at the search step — and `getaddrinfo` stops there instead of trying
+the absolute name. With `ndots: 1` the absolute name goes first. This controller resolves nothing
+in-cluster, so nothing is lost.
+
 ## Fixed by the template, not configurable
 
 - **`replicas: 1`, `strategy: Recreate`.** Two replicas would race on the same Cloud DNS changes,

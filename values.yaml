@@ -48,6 +48,15 @@ resources:
   limits:
     memory: 64Mi
 
+# ndots:1 so an external name is tried absolute before the search list. The cluster's search list
+# ends with a real public domain, and a wildcard record there answers NOERROR/NODATA rather than
+# NXDOMAIN - which stops getaddrinfo's search before it ever reaches the absolute name. This
+# controller resolves nothing in-cluster, so there is no cost.
+dnsConfig:
+  options:
+    - name: ndots
+      value: "1"
+
 nodeSelector: {}
 tolerations: []
 affinity: {}
