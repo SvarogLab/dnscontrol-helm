@@ -7,6 +7,12 @@ image:
   tag: ""
   pullPolicy: IfNotPresent
 
+# Needed when the GHCR package is private. A package is private on first push even when its
+# repository is public - GHCR does not inherit repository visibility - so either flip it in the
+# package settings, or name a pull secret here.
+imagePullSecrets: []
+# - name: ghcr-credentials
+
 config:
   # The ConfigMap holding the zone and snippet documents. Created outside this chart - the chart
   # deploys the controller, it does not own your DNS.

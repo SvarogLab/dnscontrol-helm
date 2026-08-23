@@ -41,6 +41,7 @@ namespace: dns
 | --- | --- | --- |
 | `image.repository` | `ghcr.io/svaroglab/dnscontrol` | |
 | `image.tag` | `.Chart.AppVersion` | An immutable `vX.Y.Z`; `latest` is rejected at render time |
+| `imagePullSecrets` | `[]` | Required if the GHCR package is private — see below |
 | `config.existingConfigMap` | `dns-zones` | Required; the chart fails to render without it |
 | `config.mountPath` | `/etc/dnscontrol` | |
 | `gcp.project` | `""` | Empty means the key, then the metadata server |
@@ -49,6 +50,18 @@ namespace: dns
 | `args` | `["--watch", "--diff"]` | Add `--check` to make every run read-only |
 | `logLevel` | `info` | |
 | `serviceAccount.annotations` | `{}` | `iam.gke.io/gcp-service-account` for Workload Identity |
+
+### Pulling the image
+
+A GHCR package is **private on first push, even from a public repository** — GHCR does not inherit
+repository visibility. Either make the package public once, under
+`https://github.com/orgs/<org>/packages/container/package/dnscontrol` → Package settings → Change
+visibility, or leave it private and name a pull secret:
+
+```yaml
+imagePullSecrets:
+  - name: ghcr-credentials
+```
 
 ## Fixed by the template, not configurable
 

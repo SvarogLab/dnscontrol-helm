@@ -24,6 +24,9 @@ spec:
       labels: {{- include "dnscontrol.selectorLabels" . | nindent 8 }}
     spec:
       serviceAccountName: {{ include "dnscontrol.serviceAccountName" . }}
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets: {{- toYaml . | nindent 8 }}
+      {{- end }}
       # Longer than the controller's own 45s ceiling on waiting for a Cloud DNS change, so SIGTERM
       # never lands in the middle of one.
       terminationGracePeriodSeconds: 60

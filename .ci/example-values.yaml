@@ -7,5 +7,7 @@ config:
 serviceAccount:
   annotations:
     iam.gke.io/gcp-service-account: dnscontrol@example-project.iam.gserviceaccount.com
+imagePullSecrets:
+  - name: ghcr-credentials
 nodeSelector:
   kubernetes.io/os: linux
