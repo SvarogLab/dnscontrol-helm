@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and follows [Semantic Versioning](https://semver.org/).
 
+## [0.2.0] - 2026-08-23
+
+### Added ✨
+
+- [**breaking**] Move to dnscontrol v0.2.0
+
+### Documentation 📚
+
+- Describe zone deletion as opt-in
+
+### Miscellaneous 🧹
+
+- Bump chart to 0.2.0
+- Mark breaking changes in generated entries
+
 ## [0.1.2] - 2026-08-23
 
 ### Fixed 🐛
