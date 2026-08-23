@@ -5,7 +5,7 @@ description: >-
   running as a controller that watches a mounted ConfigMap.
 type: application
 # The chart's own version, bumped independently of the controller it deploys.
-version: 0.1.0
+version: 0.1.1
 # The dnscontrol release this chart defaults to.
 appVersion: "v0.1.0"
 home: https://github.com/SvarogLab/dnscontrol-helm
