@@ -44,7 +44,7 @@ spec:
           env:
             - name: RUST_LOG
               value: {{ .Values.logLevel | quote }}
-            - name: DNS_CONFIG_DIR
+            - name: DNSCONTROL_CONFIG_DIR
               value: {{ .Values.config.mountPath | quote }}
             {{- with .Values.gcp.project }}
             - name: GOOGLE_CLOUD_PROJECT

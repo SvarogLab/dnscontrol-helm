@@ -7,7 +7,7 @@ type: application
 # The chart's own version, bumped independently of the controller it deploys.
 version: 0.1.2
 # The dnscontrol release this chart defaults to.
-appVersion: "v0.1.0"
+appVersion: "v0.2.0"
 home: https://github.com/SvarogLab/dnscontrol-helm
 sources:
   - https://github.com/SvarogLab/dnscontrol-helm
