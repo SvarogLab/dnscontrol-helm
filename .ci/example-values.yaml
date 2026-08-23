@@ -1,0 +1,11 @@
+# Exercises every optional branch in the templates. Reserved names only.
+gcp:
+  project: example-project
+  existingSecret: dnscontrol-gcp-key
+config:
+  existingConfigMap: example-zones
+serviceAccount:
+  annotations:
+    iam.gke.io/gcp-service-account: dnscontrol@example-project.iam.gserviceaccount.com
+nodeSelector:
+  kubernetes.io/os: linux

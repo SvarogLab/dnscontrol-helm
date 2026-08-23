@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/setup-helm@v4
+
+      - name: helm lint
+        run: helm lint .
+
+      - name: helm lint with the example values
+        run: helm lint . -f .ci/example-values.yaml
+
+      - name: helm template
+        run: |
+          helm template ci . > /dev/null
+          helm template ci . -f .ci/example-values.yaml > /dev/null
+
+      # The chart deploys DNS automation; a mutable tag would silently change what runs.
+      - name: the rendered image tag must be immutable
+        run: |
+          image=$(helm template ci . | grep -oE 'image: "[^"]+"' | head -1)
+          echo "$image"
+          case "$image" in
+            *:latest\"|*:\") echo "::error::rendered a mutable image tag: $image"; exit 1 ;;
+          esac
+
+      - name: the guards must fire
+        run: |
+          if helm template ci . --set image.tag=latest >/dev/null 2>&1; then
+            echo "::error::image.tag=latest was accepted"; exit 1
+          fi
+          if helm template ci . --set config.existingConfigMap=null >/dev/null 2>&1; then
+            echo "::error::a missing existingConfigMap was accepted"; exit 1
+          fi
