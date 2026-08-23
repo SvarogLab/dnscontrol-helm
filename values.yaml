@@ -28,6 +28,8 @@ gcp:
   secretKey: key.json
 
 # --check makes every run read-only. Keep it on until you have watched a real diff go by.
+# Deliberately absent: --delete-undeclared-zones. A controller reacting to a ConfigMap should not
+# hold the one irreversible switch; run that by hand when you actually mean to retire a zone.
 args:
   - --watch
   - --diff

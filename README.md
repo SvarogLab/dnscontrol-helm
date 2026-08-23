@@ -8,7 +8,7 @@ so it lands one level below the repository, keeping it clear of the controller's
 `ghcr.io/svaroglab/dnscontrol`.
 
 ```bash
-helm install dnscontrol oci://ghcr.io/svaroglab/dnscontrol-helm/dnscontrol --version 0.1.0 \
+helm install dnscontrol oci://ghcr.io/svaroglab/dnscontrol-helm/dnscontrol --version 0.2.0 \
   --set config.existingConfigMap=dns-zones \
   --set gcp.project=my-project
 ```
@@ -20,9 +20,12 @@ provide. It never creates that ConfigMap and never creates a Secret — your zon
 credentials are not the chart's to own, and keeping them out is what lets this repository stay
 public and free of real data.
 
-> The controller is authoritative over the whole GCP project: any managed zone not declared in the
-> config is deleted. Point it at a project you own exclusively, and keep `--check` in `args` until
-> you have watched a real diff go by.
+> The controller is authoritative inside every zone it declares: a record set the ConfigMap does not
+> mention is deleted. Keep `--check` in `args` until you have watched a real diff go by.
+>
+> Zones themselves are left alone unless `--delete-undeclared-zones` is passed, which this chart
+> deliberately keeps out of its defaults — retiring a zone is not something a controller should do
+> in reaction to a ConfigMap edit.
 
 For ArgoCD's ApplicationSet:
 
@@ -30,7 +33,7 @@ For ArgoCD's ApplicationSet:
 # .appset.yaml
 chart: dnscontrol
 chartRepoURL: ghcr.io/svaroglab/dnscontrol-helm
-targetRevision: "0.1.0"
+targetRevision: "0.2.0"
 releaseName: dnscontrol
 namespace: dns
 ```
@@ -48,6 +51,7 @@ namespace: dns
 | `gcp.existingSecret` | `""` | Empty means Workload Identity — nothing is mounted |
 | `gcp.secretKey` | `key.json` | |
 | `args` | `["--watch", "--diff"]` | Add `--check` to make every run read-only |
+| `dnsConfig` | `ndots: 1` | Load-bearing — see below |
 | `logLevel` | `info` | |
 | `serviceAccount.annotations` | `{}` | `iam.gke.io/gcp-service-account` for Workload Identity |
 
